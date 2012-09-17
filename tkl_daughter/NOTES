@@ -1,0 +1,77 @@
+
+Physical layout of keys as seen on the keyboard, top row first
+
+J6 Q5 Q7 H7 K1 N0 K3 G6 P6 Q1 L5 J3 E7 L3 N5 P2
+Q4 M0 M1 M3 M2 Q6 R0 M4 M5 L2 L4 Q0 R1 H1 R6 R3 R2
+H4 O2 O3 O5 O4 H6 I0 O6 O7 N4 N6 H0 I1 A3 R5 M7 M6
+H5 D0 D1 D3 D2 K0 K2 D4 D5 C2 C4 J2 C5
+H3 J7 A6 A7 B1 B0 F4 F6 B2 B3 A0 E6 C7 K5
+R4 H2 J1 K7 E5 E3 E4 B6 G1 G3 G4
+
+Logical layout of keys
+
+   0            1            2            3            4            5            6            7
+A  .                                      Return                                 Z            X
+B  V            C            M            ,                                      CtrlR
+C                            L                         Ö            '                         ShiftR
+D  A            S            F            D            J            K
+E                                         SuperR       Menu         AltR         -            F12
+F                                                      B                         N 
+G               Left                      Down         Right                     F7
+H  Å            BckSp        SuperL       ShiftL       Tab          CapsLck      T            F3
+I  Y            ¨ 
+J               AltL         Ä            F11                                    Esc          <
+K  G            F4           H            F6                        Up                        Space
+L                            9            PrScr        0            F10
+M  1            2            4            3            7            8            PageUp       End
+N  F5                                                  O            ScrLck       P 
+O                            Q            W            R            E            U            I
+P                            Pause                                               F8
+Q +             F9                                     §            F1           5            F2
+R 6             ´            PageUp       Home         CtrlL        Delete       Insert
+
+
+Layout matrices for testing purposes
+
+const uint8_t layout[NKEY] = {
+//ROW 0            ROW 1            ROW 2            ROW 3            ROW 4            ROW 5            ROW 6            ROW 7
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL A
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL B
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL C
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL D
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL E
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL F
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL G
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL H
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL I
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL J
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL K
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL L
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL M
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL N
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL O
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL P
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7,          // COL Q
+  KEY_0,           KEY_1,           KEY_2,           KEY_3,           KEY_4,           KEY_5,           KEY_6,           KEY_7           // COL R
+};
+const uint8_t layout[NKEY] = {
+//ROW 0            ROW 1            ROW 2            ROW 3            ROW 4            ROW 5            ROW 6            ROW 7
+  KEY_A,           KEY_A,           KEY_A,           KEY_A,           KEY_A,           KEY_A,           KEY_A,           KEY_A,             // COL A
+  KEY_B,           KEY_B,           KEY_B,           KEY_B,           KEY_B,           KEY_B,           KEY_B,           KEY_B,             // COL B
+  KEY_C,           KEY_C,           KEY_C,           KEY_C,           KEY_C,           KEY_C,           KEY_C,           KEY_C,             // COL C
+  KEY_D,           KEY_D,           KEY_D,           KEY_D,           KEY_D,           KEY_D,           KEY_D,           KEY_D,             // COL D
+  KEY_E,           KEY_E,           KEY_E,           KEY_E,           KEY_E,           KEY_E,           KEY_E,           KEY_E,             // COL E
+  KEY_F,           KEY_F,           KEY_F,           KEY_F,           KEY_F,           KEY_F,           KEY_F,           KEY_F,             // COL F
+  KEY_G,           KEY_G,           KEY_G,           KEY_G,           KEY_G,           KEY_G,           KEY_G,           KEY_G,             // COL G
+  KEY_H,           KEY_H,           KEY_H,           KEY_H,           KEY_H,           KEY_H,           KEY_H,           KEY_H,             // COL H
+  KEY_I,           KEY_I,           KEY_I,           KEY_I,           KEY_I,           KEY_I,           KEY_I,           KEY_I,             // COL I
+  KEY_J,           KEY_J,           KEY_J,           KEY_J,           KEY_J,           KEY_J,           KEY_J,           KEY_J,             // COL J
+  KEY_K,           KEY_K,           KEY_K,           KEY_K,           KEY_K,           KEY_K,           KEY_K,           KEY_K,             // COL K
+  KEY_L,           KEY_L,           KEY_L,           KEY_L,           KEY_L,           KEY_L,           KEY_L,           KEY_L,             // COL L
+  KEY_M,           KEY_M,           KEY_M,           KEY_M,           KEY_M,           KEY_M,           KEY_M,           KEY_M,             // COL M
+  KEY_N,           KEY_N,           KEY_N,           KEY_N,           KEY_N,           KEY_N,           KEY_N,           KEY_N,             // COL N
+  KEY_O,           KEY_O,           KEY_O,           KEY_O,           KEY_O,           KEY_O,           KEY_O,           KEY_O,             // COL O
+  KEY_P,           KEY_P,           KEY_P,           KEY_P,           KEY_P,           KEY_P,           KEY_P,           KEY_P,             // COL P
+  KEY_Q,           KEY_Q,           KEY_Q,           KEY_Q,           KEY_Q,           KEY_Q,           KEY_Q,           KEY_Q,             // COL Q
+  KEY_R,           KEY_R,           KEY_R,           KEY_R,           KEY_R,           KEY_R,           KEY_R,           KEY_R              // COL R
+};
