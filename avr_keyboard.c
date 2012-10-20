@@ -70,20 +70,19 @@ void setup_io_pins(void);
 /* Check for keys ready to be released, and 
    advance the bouncer counter on all keys. */
 ISR(INTERRUPT_FUNCTION) {
-  uint16_t key;
+  uint8_t key;
   for(key = 0; key < NKEY; key++) {
     if(key_status[key].release == 0x01)
       key_release(key);
     key_status[key].release >>= 1;
   }
   update_leds();
-  if(mod_keys == (KEY_LEFT_SHIFT | KEY_RIGHT_SHIFT))
+  if(mod_keys == (uint8_t)(KEY_LEFT_SHIFT | KEY_RIGHT_SHIFT))
     jump_bootloader();
 }
 
 int main(void) {
-  uint16_t key;
-  uint8_t row, col;
+  uint8_t key, row, col;
   uint8_t this, previous[NKEY];
 
   init();
@@ -170,7 +169,9 @@ void key_release(uint16_t key) {
 /* Call initialization functions */
 void init(void) {
   uint8_t key;
+  // 16 MHz clock
   CLKPR = 0x80; CLKPR = 0;
+  // Disable JTAG
   MCUCR |= 0x80; MCUCR |= 0x80;  
   usb_init();
   while(!usb_configured())
@@ -183,7 +184,5 @@ void init(void) {
     key_status[key].pressed = false;
     key_status[key].release = 0x00;
   }
-  /* key_pressed = (uint8_t *)key_status; */
-  /* key_bouncer = (uint8_t *)key_status + 1; */
   sei();  // Enable interrupts
 }

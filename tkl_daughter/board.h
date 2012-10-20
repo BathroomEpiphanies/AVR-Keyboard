@@ -6,7 +6,9 @@
 #include "../avr.h"
 #include "../usb_keyboard_debug.h"
 
-#define __LUFA_Bootloader__
+/* LUFA/Atmel Bootloader
+   32768 = 0x8000, 32768-4096 = 0x7000 */
+#define BOOTLOADER_JUMP asm volatile("jmp 0x7000");
 #define ACTIVE_HIGH
 #define INTERRUPT_FUNCTION TIMER0_COMPA_vect
 #define SETTLE_TIME_US 1

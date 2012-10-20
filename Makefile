@@ -33,31 +33,32 @@
 #LAYOUT = ansi_iso_win
 #MCU = atmega32u4
 #F_CPU = 16000000
+#B_LOADER = \"jmp\ 0x7E00\"
 
 BOARD = tkl_daughter
-LAYOUT = ansi
+LAYOUT = ansi_iso
 MCU = atmega32u4
 F_CPU = 16000000
+B_LOADER = \"jmp\ 0x7000\"
 
 #BOARD = test32u2
 #LAYOUT = test
 #MCU = atmega32u2
 #F_CPU = 16000000
+#B_LOADER = \"jmp\ 0x7000\"
 
 #BOARD = sskb
 #LAYOUT = symmetric
 #LAYOUT = iso
 #MCU = at90usb1286
 #F_CPU = 16000000
+#B_LOADER = \"jmp\ 0x1FC00\"
 
 #BOARD = pontus
 #LAYOUT = pontus
 #MCU = at90usb1286
 #F_CPU = 16000000
-
-#BOARD = sskb_pontus
-#MCU = at90usb1286
-#F_CPU = 16000000
+#B_LOADER = \"jmp\ 0x1FC00\"
 
 # List C source files here.
 SRC =	avr_keyboard.c \
@@ -67,7 +68,7 @@ SRC =	avr_keyboard.c \
 	$(BOARD)/$(LAYOUT).c
 
 # Place -D or -U options here for C sources
-CDEFS = -DF_CPU=$(F_CPU)UL -D__INCLUDE_KEYBOARD=\"$(BOARD)/board.h\" -D__INCLUDE_LAYOUT=\"$(BOARD)/$(LAYOUT).h\"
+CDEFS = -DF_CPU=$(F_CPU)UL -D__INCLUDE_KEYBOARD=\"$(BOARD)/board.h\" -D__INCLUDE_LAYOUT=\"$(BOARD)/$(LAYOUT).h\" -D__BOOTLOADER_JUMP=$(B_LOADER)
 
 # Optimization level, can be [0, 1, 2, 3, s]. 
 #     0 = turn off optimization. s = optimize for size.

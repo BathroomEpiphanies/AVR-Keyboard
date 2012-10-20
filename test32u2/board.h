@@ -7,7 +7,9 @@
 #include "../usb_keyboard_debug.h"
 #include "../print.h"
 
-#define __LUFA_Bootloader__
+/* LUFA/Atmel Bootloader
+   32768 = 0x8000, 32768-4096 = 0x7000 */
+#define BOOTLOADER_JUMP "jmp 0x7000"
 #define ACTIVE_LOW
 #define INTERRUPT_FUNCTION TIMER0_COMPA_vect
 #define SETTLE_TIME_US 1

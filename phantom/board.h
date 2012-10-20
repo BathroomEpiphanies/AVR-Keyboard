@@ -6,7 +6,9 @@
 #include "../avr.h"
 #include "../usb_keyboard_debug.h"
 
-#define __Halfkay_Bootloader__
+/* HalfKay Bootloader
+   32768 = 0x8000, 32768-512 = 0x7E00 */
+#define BOOTLOADER_JUMP "jmp 0x7E00"
 #define ACTIVE_LOW
 #define INTERRUPT_FUNCTION TIMER0_COMPA_vect
 #define SETTLE_TIME_US 1
