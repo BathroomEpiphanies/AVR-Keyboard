@@ -10,6 +10,7 @@
 #define __LUFA_Bootloader__
 #define ACTIVE_LOW
 #define INTERRUPT_FUNCTION TIMER0_COMPA_vect
+#define SETTLE_TIME_US 1
 
 void pull_column(int row);
 void release_column(int row);

@@ -21,6 +21,8 @@
  * THE SOFTWARE.
  */
 
+
+#include <stdlib.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
@@ -31,20 +33,27 @@
 #include __INCLUDE_KEYBOARD
 #include __INCLUDE_LAYOUT
 
+
+typedef struct key {
+  uint8_t value;
+  uint8_t type;
+}KEY;
+
+typedef struct status {
+  bool pressed;
+  uint8_t release;
+}STATUS;
+
 /* pressed   keeps track of which keys that are pressed 
    bouncer   keeps track of which keys that may be released
    queue     contains the keys that are sent in the HID packet 
    mod_keys  is the bit pattern corresponding to pressed modifier keys */
-const uint8_t NNKEY = 2*NKEY;
-uint16_t key_status[NKEY];
-uint8_t *key_pressed = (uint8_t *)key_status;
-volatile uint8_t *key_bouncer = (uint8_t *)key_status + 1;
-uint8_t queue[7] = {255,255,255,255,255,255,255};
+uint16_t queue[7] = {300,300,300,300,300,300,300};
 uint8_t mod_keys = 0;
 
 extern const uint16_t layer0[];
-const uint8_t *layout_type = (uint8_t *)layer0 + 1;
-const uint8_t *layout_value = (uint8_t *)layer0;
+KEY * layout = (KEY *)(layer0);
+STATUS key_status[NKEY];
 
 extern uint8_t *const row_ddr[];
 extern uint8_t *const row_port[];
@@ -54,50 +63,42 @@ extern const uint8_t row_bit[];
 void init(void);
 void send(void);
 void poll(void);
-void key_press(uint8_t key);
-void key_release(uint8_t key);
+void key_press(uint16_t key);
+void key_release(uint16_t key);
 void setup_io_pins(void);
 
 /* Check for keys ready to be released, and 
    advance the bouncer counter on all keys. */
 ISR(INTERRUPT_FUNCTION) {
-  uint8_t key;
-  for(key = 0; key < NNKEY; key+=2) {
-    if(key_bouncer[key] == 0x01)
+  uint16_t key;
+  for(key = 0; key < NKEY; key++) {
+    if(key_status[key].release == 0x01)
       key_release(key);
-    key_bouncer[key] >>= 1;
+    key_status[key].release >>= 1;
   }
   update_leds();
-  //  if(mod_keys == (KEY_LEFT_SHIFT | KEY_RIGHT_SHIFT))
-  //    jump_bootloader();
+  if(mod_keys == (KEY_LEFT_SHIFT | KEY_RIGHT_SHIFT))
+    jump_bootloader();
 }
 
 int main(void) {
-  uint8_t row, col, key;
-  uint8_t this, previous[NNKEY];
+  uint16_t key;
+  uint8_t row, col;
+  uint8_t this, previous[NKEY];
 
   init();
-  
-  /* for(;;) { */
-  /*   print("hej\n"); */
-  /*   _delay_ms(500); */
-  /* } */
 
-  print("hej igen\n");
-
-  for(key = 0; key < NNKEY; key+=2)
+  for(key = 0; key < NKEY; key++)
     previous[key] = 0;
 
   for(;;) {
-    
-
     // Pull one column at a time high/low, 
     // register which rows are affected.
     for(col = 0, key = 0; col < NCOL; col++) {
       pull_column(col);
-      _delay_us(1);
+      _delay_us(SETTLE_TIME_US);
 
-      for(row = 0; row < NROW; row++, key+=2) {
+      for(row = 0; row < NROW; row++, key++) {
 	
       #if defined ACTIVE_LOW
 	this = !(*row_pin[row] & row_bit[row]);
@@ -106,13 +107,17 @@ int main(void) {
       #endif
 	
 	// Detect rising and falling edges on key status
-	if(this && !previous[key])
-	  if(!key_pressed[key])
+	if(this && !previous[key]){
+	  print("Press: "); phex(row); print(" "); phex(col); print("\n");
+	  if(!key_status[key].pressed)
 	    key_press(key);
 	  else
-	    key_bouncer[key] = 0x00; // Abort release
-	else if(previous[key] && !this)
-	  key_bouncer[key] = 0x80; // Initiate release
+	    key_status[key].release = 0x00; // Abort release
+	}
+	else if(previous[key] && !this) {
+	  print("Relea: "); phex(row); print(" "); phex(col); print("\n");
+	  key_status[key].release = 0x80; // Initiate release
+	}
 	
 	previous[key] = this;
       }
@@ -126,18 +131,18 @@ void send(void) {
   //return;
   uint8_t i;
   for(i=0; i<6; i++)
-    keyboard_keys[i] = queue[i]<255? layout_value[queue[i]]: 0;
+    keyboard_keys[i] = queue[i]<255? layout[queue[i]].value: 0;
   keyboard_modifier_keys = mod_keys;
   usb_keyboard_send();
 }
 
 /* */
-void key_press(uint8_t key) {
+void key_press(uint16_t key) {
   uint8_t i;
-  key_pressed[key] = true;
-  key_bouncer[key] = 0x00;
-  if(layout_type[key])
-    mod_keys |= layout_value[key];
+  key_status[key].pressed = true;
+  key_status[key].release = 0x00;
+  if(layout[key].type)
+    mod_keys |= layout[key].value;
   else {
     for(i = 5; i > 0; i--) queue[i] = queue[i-1];
     queue[0] = key;
@@ -146,12 +151,12 @@ void key_press(uint8_t key) {
 }
 
 /* */
-void key_release(uint8_t key) {
+void key_release(uint16_t key) {
   uint8_t i;
-  key_pressed[key] = false;
-  key_bouncer[key] = 0x00;
-  if(layout_type[key])
-    mod_keys &= ~layout_value[key];
+  key_status[key].pressed = false;
+  key_status[key].release = 0x00;
+  if(layout[key].type)
+    mod_keys &= ~layout[key].value;
   else {
     for(i = 0; i < 6; i++) 
       if(queue[i]==key)
@@ -166,15 +171,17 @@ void key_release(uint8_t key) {
 void init(void) {
   uint8_t key;
   CLKPR = 0x80; CLKPR = 0;
+  MCUCR |= 0x80; MCUCR |= 0x80;  
   usb_init();
   while(!usb_configured())
-    _delay_ms(500);
+    _delay_ms(100);
   setup_io_pins();
   setup_leds();
   setup_bounce_timer();
   mod_keys = 0;
   for(key = 0; key < NKEY; key++) {
-    key_status[key] = 0x0000;
+    key_status[key].pressed = false;
+    key_status[key].release = 0x00;
   }
   /* key_pressed = (uint8_t *)key_status; */
   /* key_bouncer = (uint8_t *)key_status + 1; */

@@ -28,9 +28,14 @@
 #----------------------------------------------------------------------------
 
 # Keyboard type (with micro controller code and speed)
-BOARD = phantom
-LAYOUT = ansi_iso
+#BOARD = phantom
+#LAYOUT = ansi_iso
 #LAYOUT = ansi_iso_win
+#MCU = atmega32u4
+#F_CPU = 16000000
+
+BOARD = tkl_daughter
+LAYOUT = ansi
 MCU = atmega32u4
 F_CPU = 16000000
 

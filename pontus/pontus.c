@@ -1,7 +1,7 @@
 #include "pontus.h"
 
 const uint16_t layout[NKEY] = {
-//ROW 0            ROW 1            ROW 2            ROW 3            ROW 4
+//ROW 0            ROW 1            ROW 2            ROW 3            ROW 4               ROW 5
   KEY_LEFT_CTRL,   KEY_LEFT_SHIFT,  KEY_CAPS_LOCK,   KEY_TAB,         KEY_TILDE,          KEY_ESC,        // COL  0
   NA,              KEY_PIPE,        KEY_A,           KEY_Q,           KEY_1,              NA,             // COL  1
   KEY_LEFT_GUI,    KEY_Z,           KEY_S,           KEY_W,           KEY_2,              KEY_F1,         // COL  2
