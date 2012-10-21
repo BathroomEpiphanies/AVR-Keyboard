@@ -1,4 +1,4 @@
-#include "ansi_iso.h"
+#include "ansi_iso_jis.h"
 
 const uint16_t layer0[NKEY] = {
 /*ROW A           ROW B           ROW C           ROW D           ROW E           ROW F
