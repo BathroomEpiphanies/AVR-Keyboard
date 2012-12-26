@@ -37,18 +37,18 @@
 typedef struct key {
   uint8_t value;
   uint8_t type;
-}KEY;
+} KEY;
 
 typedef struct status {
   bool pressed;
   uint8_t release;
-}STATUS;
+} STATUS;
 
 /* pressed   keeps track of which keys that are pressed 
    bouncer   keeps track of which keys that may be released
    queue     contains the keys that are sent in the HID packet 
    mod_keys  is the bit pattern corresponding to pressed modifier keys */
-uint16_t queue[7] = {300,300,300,300,300,300,300};
+uint8_t queue[7] = {255,255,255,255,255,255,255};
 uint8_t mod_keys = 0;
 
 extern const uint16_t layer0[];
@@ -63,8 +63,8 @@ extern const uint8_t row_bit[];
 void init(void);
 void send(void);
 void poll(void);
-void key_press(uint16_t key);
-void key_release(uint16_t key);
+void key_press(uint8_t key);
+void key_release(uint8_t key);
 void setup_io_pins(void);
 
 /* Check for keys ready to be released, and 
@@ -107,14 +107,14 @@ int main(void) {
 	
 	// Detect rising and falling edges on key status
 	if(this && !previous[key]){
-	  print("Press: "); phex(row); print(" "); phex(col); print("\n");
+    //	  print("Press: "); phex(row); print(" "); phex(col); print("\n");
 	  if(!key_status[key].pressed)
 	    key_press(key);
 	  else
 	    key_status[key].release = 0x00; // Abort release
 	}
 	else if(previous[key] && !this) {
-	  print("Relea: "); phex(row); print(" "); phex(col); print("\n");
+    //	  print("Relea: "); phex(row); print(" "); phex(col); print("\n");
 	  key_status[key].release = 0x80; // Initiate release
 	}
 	
@@ -136,7 +136,7 @@ void send(void) {
 }
 
 /* */
-void key_press(uint16_t key) {
+void key_press(uint8_t key) {
   uint8_t i;
   key_status[key].pressed = true;
   key_status[key].release = 0x00;
@@ -150,7 +150,7 @@ void key_press(uint16_t key) {
 }
 
 /* */
-void key_release(uint16_t key) {
+void key_release(uint8_t key) {
   uint8_t i;
   key_status[key].pressed = false;
   key_status[key].release = 0x00;

@@ -4,7 +4,7 @@
 #define symmetric_board_h__
 
 #include "../avr.h"
-#include "../usb_keyboard.h"
+#include "../usb_keyboard_debug.h"
 
 /* HalfKay Bootloader
    32768 = 0x8000, 32768-512 = 0x7E00 */
@@ -17,6 +17,7 @@ void pull_column(int row);
 void release_column(int row);
 void update_leds(void);
 void setup_leds(void);
+void setup_io_pins(void);
 void setup_bounce_timer(void);
 void toggle_leds(void);
 

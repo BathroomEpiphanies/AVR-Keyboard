@@ -28,18 +28,18 @@
 #----------------------------------------------------------------------------
 
 # Keyboard type (with micro controller code and speed)
-#BOARD = phantom
+BOARD = phantom
 #LAYOUT = ansi_iso
-#LAYOUT = ansi_iso_win
-#MCU = atmega32u4
-#F_CPU = 16000000
-#B_LOADER = \"jmp\ 0x7E00\"
-
-BOARD = hid_liber
-LAYOUT = ansi_iso_jis
+LAYOUT = ansi_iso_win
 MCU = atmega32u4
 F_CPU = 16000000
-B_LOADER = \"jmp\ 0x7000\"
+B_LOADER = \"jmp\ 0x7E00\"
+
+# BOARD = hid_liber
+# LAYOUT = ansi_iso_jis
+# MCU = atmega32u4
+# F_CPU = 16000000
+# B_LOADER = \"jmp\ 0x7000\"
 
 #BOARD = test32u2
 #LAYOUT = test

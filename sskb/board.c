@@ -32,6 +32,20 @@ inline void update_leds() {
   DDRC  = (DDRC  & 0x8F) | ((keyboard_leds << 4) & 0x70);
 }
 
+/* PORTB is set as input with pull-up resistors
+   PORTC,D,E,F are set to high output */
+void setup_io_pins(void) {
+  uint8_t row, col;
+  for(row = 0; row < NROW; row++) {
+    *row_ddr[row]  &= ~row_bit[row];
+    *row_port[row] |=  row_bit[row];
+  }
+  for(col = 0; col < NCOL; col++) {
+    *col_ddr[col]  |= col_bit[col];
+    *col_port[col] |= col_bit[col];
+  }
+}
+
 /* LEDs are on output compare pins OC1B OC1C
    This activates fast PWM mode on them.
    Prescaler 256 and 8-bit counter results in
